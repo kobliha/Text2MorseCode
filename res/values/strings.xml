@@ -3,4 +3,6 @@
     <string name="app_name">Text to Morse Code</string>
     <string name="translate">Translate Now!</string>
     <string name="clear">Clear</string>
+    <string name="human_readable">Human-readable output</string>
+    <string name="machine_readable">Machine-readable output</string>
 </resources>
