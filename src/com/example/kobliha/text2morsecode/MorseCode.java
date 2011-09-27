@@ -5,12 +5,18 @@ import java.text.Normalizer;
 
 public class MorseCode {
 
-	private static Hashtable<Character, String> morseCharacters = new Hashtable<Character, String>();
+	private static Hashtable<Character, String> morseCharacters =
+		new Hashtable<Character, String>();
 
 	// Special Morse code separators
-	public static final String WORD_SEPARATOR = "       ";
-	public static final String CHARACTER_SEPARATOR = "   ";
+	public static final String WORD_SEPARATOR_MR = "       ";
+	public static final String CHARACTER_SEPARATOR_MR = "   ";
+	public static final String WORD_SEPARATOR_HR = "||";
+	public static final String CHARACTER_SEPARATOR_HR = "|";
 
+	private static String wordSeparator = "";
+	private static String characterSeparator = "";
+	
 	// Special Morse code strings
 	public static final String MORSE_WAIT = ". - . . .";
 	public static final String MORSE_INVITATION_TO_TRANSMIT = "- . -";
@@ -19,10 +25,23 @@ public class MorseCode {
 	public static final String MORSE_UNDERSTOOD = ". . . - .";
 	public static final String MORSE_STARTING_SIGNAL = "- . - . -";
 
+	private static boolean minimizeOutput = false;
+	
 	/**
 	 * Constructor
 	 */
-	public MorseCode() {
+	public MorseCode(String output_type) {
+		// FIXME: this is obviously not the best solution...
+		if (output_type == "MR") {
+			wordSeparator = WORD_SEPARATOR_MR;
+			characterSeparator = CHARACTER_SEPARATOR_MR;
+			minimizeOutput = false;
+		} else {
+			wordSeparator = WORD_SEPARATOR_HR;
+			characterSeparator = CHARACTER_SEPARATOR_HR;
+			minimizeOutput = true;
+		}
+		
 		// letters
 		morseCharacters.put('A', ". -");
 		morseCharacters.put('B', "- . . .");
@@ -66,21 +85,27 @@ public class MorseCode {
 		// special characters
 		morseCharacters.put('.', ". - . - . -");
 		morseCharacters.put(',', "- - . . - -");
-		morseCharacters.put(':', "- - - . . .");
 		morseCharacters.put('?', ". . - - . .");
 		morseCharacters.put('\'', ". - - - - .");
-		morseCharacters.put('-', "- . . . . -");
+		morseCharacters.put('!', "- . - . - -");
 		morseCharacters.put('/', "- . . - .");
 		morseCharacters.put('(', "- . - - . -");
 		morseCharacters.put(')', "- . - - . -");
-		morseCharacters.put('"', ". - . . - .");
-		morseCharacters.put('@', ". - - . - .");
+		morseCharacters.put('&', ". - . . .");
+		morseCharacters.put(':', "- - - . . .");
+		morseCharacters.put(';', "- . - . - .");
 		morseCharacters.put('=', "- . . . -");
+		morseCharacters.put('+', "- . . . -");
+		morseCharacters.put('-', "- . . . . -");
+		morseCharacters.put('_', ". . - - . -");
+		morseCharacters.put('"', ". - . . - .");
+		morseCharacters.put('$', ". . . - . . -");
+		morseCharacters.put('@', ". - - . - .");
 
 		// word separators
-		morseCharacters.put(' ', WORD_SEPARATOR);
-		morseCharacters.put('\n', WORD_SEPARATOR);
-		morseCharacters.put('\t', WORD_SEPARATOR);
+		morseCharacters.put(' ', wordSeparator);
+		morseCharacters.put('\n', wordSeparator);
+		morseCharacters.put('\t', wordSeparator);
 		// CR is ignored
 		morseCharacters.put('\r', "");
 	}
@@ -94,25 +119,45 @@ public class MorseCode {
 	 * @return String translated text
 	 */
     public String textToMorse (String translateThis) {
-		char[] stringArray =
+    	String[] words =
 			// translates all non-ASCII characters to their ASCII representation
-			Normalizer.normalize(translateThis, Normalizer.Form.NFD)
-			.replaceAll("[^\\p{ASCII}]", "")
-        	// all Morse code letters are upper-case
-        	.toUpperCase()
-        	// translating char by char
-        	.toCharArray();
+    		Normalizer.normalize(translateThis, Normalizer.Form.NFD)
+    		.replaceAll("[^\\p{ASCII}]", "")
+    		// all Morse code letters are upper-case
+    		.toUpperCase()
+    		.split(" ");
 
-		String morseText = "";
-		Character charToMorse;
+    	String morseText = "";
 
-		for (int index=0; index < stringArray.length; index++) {
-			charToMorse = stringArray[index];
-			morseText += (morseText.length() == 0 ? "" : CHARACTER_SEPARATOR)
-				+ charToMorse(charToMorse);
+		// translating word by word
+		for (int wordIndex=0; wordIndex < words.length; wordIndex++) {
+			morseText += (morseText.length() == 0 ? "" : wordSeparator)
+				+ wordToMorse(words[wordIndex]);
 		}
 
+		// FIXME: spaces are already contained in the morseCharacters hashtable
+		if (minimizeOutput)
+			morseText = morseText.replaceAll(" ", "");
+		
 		return morseText;
+    }
+
+    /**
+     * Translates given word into its Morse code representation.
+     * 
+     * @param String word to translate
+     * @return String Morse code representation
+     */
+    private String wordToMorse (String wrd) {
+    	String morseWord = "";
+
+    	char[] stringArray = wrd.toCharArray();
+		for (int index=0; index < stringArray.length; index++) {
+			morseWord += (morseWord.length() == 0 ? "" : characterSeparator)
+				+ charToMorse(stringArray[index]);
+		}
+
+		return morseWord;
     }
     
     /**

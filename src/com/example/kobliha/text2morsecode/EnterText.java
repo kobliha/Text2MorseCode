@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
+import android.widget.RadioButton;
 
 public class EnterText extends Activity {
     /**
@@ -55,13 +55,16 @@ public class EnterText extends Activity {
 
     	EditText morseCodeWidget = (EditText)findViewById(R.id.morse_code);
 
+    	final RadioButton machineReadableOutput = (RadioButton) findViewById(R.id.output_type_MR);
+    	String output_type = (machineReadableOutput.isChecked() ? "MR" : "HR");
+
     	// nothing entered
     	if (enteredText.length() == 0) {
     		morseCodeWidget.setEnabled(false);
     		morseCodeWidget.setText("");
     	} else {
     		morseCodeWidget.setEnabled(true);
-        	MorseCode morseCode = new MorseCode();
+        	MorseCode morseCode = new MorseCode(output_type);
         	morseCodeWidget.setText(morseCode.textToMorse(enteredText));
     	}
     }
