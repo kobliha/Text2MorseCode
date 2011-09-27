@@ -7,13 +7,29 @@
         android:id="@+id/text_entry"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/text_entry" 
         android:height="120sp"
         android:gravity="top|left" />
-	<Button
-		android:id="@+id/translate"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:text="@string/translate"
-		android:onClick="runText2MorseCode" />
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    	android:orientation="horizontal"
+    	android:layout_width="fill_parent"
+    	android:layout_height="wrap_content">
+		<Button
+			android:id="@+id/translate"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/translate"
+			android:onClick="runText2MorseCode" />
+		<Button
+			android:id="@+id/clear"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/clear"
+			android:onClick="runClearWidgets" />
+	</LinearLayout>
+    <EditText
+        android:id="@+id/morse_code"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" 
+        android:height="120sp"
+        android:gravity="top|left" />
 </LinearLayout>

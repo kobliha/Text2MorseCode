@@ -14,6 +14,8 @@ public class EnterText extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+
+        adjustWidgets();
     }
 
     /**
@@ -26,12 +28,41 @@ public class EnterText extends Activity {
     	// empty string entered
     	if (enteredText.length() == 0) {
     		// FIXME: localization
-    		Message.showWarning(EnterText.this, "Enter string for translation first");
+    		Message.showWarning(EnterText.this, "Enter text for translation first");
     		return;
     	}
-    	
-    	MorseCode morseCode = new MorseCode();
-    	Toast.makeText(EnterText.this, morseCode.textToMorse(enteredText),
-    		Toast.LENGTH_LONG).show();
+
+    	adjustWidgets();
+    }
+
+    /**
+     * Clears the UI
+     */
+    public void runClearWidgets (View v) {
+    	EditText enteredTextWidget = (EditText)findViewById(R.id.text_entry);
+    	enteredTextWidget.setText("");
+
+    	adjustWidgets();
+    }
+
+    /**
+     * Adjusts EditText widgets according their state and translates
+     * the entered text if appropriate.
+     */
+    public void adjustWidgets () {
+    	EditText enteredTextWidget = (EditText)findViewById(R.id.text_entry);
+    	String enteredText = enteredTextWidget.getText().toString();
+
+    	EditText morseCodeWidget = (EditText)findViewById(R.id.morse_code);
+
+    	// nothing entered
+    	if (enteredText.length() == 0) {
+    		morseCodeWidget.setEnabled(false);
+    		morseCodeWidget.setText("");
+    	} else {
+    		morseCodeWidget.setEnabled(true);
+        	MorseCode morseCode = new MorseCode();
+        	morseCodeWidget.setText(morseCode.textToMorse(enteredText));
+    	}
     }
 }

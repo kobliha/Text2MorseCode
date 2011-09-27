@@ -2,5 +2,5 @@
 <resources>
     <string name="app_name">Text to Morse Code</string>
     <string name="translate">Translate Now!</string>
-    <string name="text_entry">Enter text for translation</string>
+    <string name="clear">Clear</string>
 </resources>

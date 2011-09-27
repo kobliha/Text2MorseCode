@@ -8,16 +8,16 @@ public class MorseCode {
 	private static Hashtable<Character, String> morseCharacters = new Hashtable<Character, String>();
 
 	// Special Morse code separators
-	public static final String WORD_SEPARATOR				= "       ";
-	public static final String CHARACTER_SEPARATOR			= "   ";
+	public static final String WORD_SEPARATOR = "       ";
+	public static final String CHARACTER_SEPARATOR = "   ";
 
 	// Special Morse code strings
-	public static final String MORSE_WAIT					= ". - . . .";
-	public static final String MORSE_INVITATION_TO_TRANSMIT	= "- . -";
-	public static final String MORSE_ERROR					= ". . . . . . . .";
-	public static final String MORSE_END_OF_WORK			= ". . . - . -";
-	public static final String MORSE_UNDERSTOOD				= ". . . - .";
-	public static final String MORSE_STARTING_SIGNAL		= "- . - . -";
+	public static final String MORSE_WAIT = ". - . . .";
+	public static final String MORSE_INVITATION_TO_TRANSMIT = "- . -";
+	public static final String MORSE_ERROR = ". . . . . . . .";
+	public static final String MORSE_END_OF_WORK = ". . . - . -";
+	public static final String MORSE_UNDERSTOOD = ". . . - .";
+	public static final String MORSE_STARTING_SIGNAL = "- . - . -";
 
 	/**
 	 * Constructor
