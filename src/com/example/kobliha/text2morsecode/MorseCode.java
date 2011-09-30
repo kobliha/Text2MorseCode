@@ -24,9 +24,9 @@ public class MorseCode {
 			outputType = storedOutputType;
 
 		if (outputType.equals(OUTPUT_TYPE_HUMAN_READABLE)) {
-			morseCharacters = (MorseCharacter) new MorseCharacterHumanReadable();
+			morseCharacters = new MorseCharacterHumanReadable();
 		} else if (outputType.equals(OUTPUT_TYPE_MACHINE_READABLE)) {
-			morseCharacters = (MorseCharacter) new MorseCharacterMachineReadable();
+			morseCharacters = new MorseCharacterMachineReadable();
 		} else {
 			// FIXME: localization
 			Message.showWarning(c, "Selected output type '" + outputType + "' is unknown.");
