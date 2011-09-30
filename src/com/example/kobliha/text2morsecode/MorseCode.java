@@ -3,16 +3,18 @@ package com.example.kobliha.text2morsecode;
 import java.util.Hashtable;
 import java.text.Normalizer;
 
+import android.content.Context;
+
 public class MorseCode {
 
 	private static Hashtable<Character, String> morseCharacters =
 		new Hashtable<Character, String>();
 
 	// Special Morse code separators
-	public static final String WORD_SEPARATOR_MR = "       ";
-	public static final String CHARACTER_SEPARATOR_MR = "   ";
-	public static final String WORD_SEPARATOR_HR = "||";
-	public static final String CHARACTER_SEPARATOR_HR = "|";
+	public static final String WORD_SEPARATOR_MR = "       ";  // 7 spaces 
+	public static final String CHARACTER_SEPARATOR_MR = "   "; // 3 spaces
+	public static final String WORD_SEPARATOR_HR = "//";
+	public static final String CHARACTER_SEPARATOR_HR = "/";
 
 	private static String wordSeparator = "";
 	private static String characterSeparator = "";
@@ -26,22 +28,32 @@ public class MorseCode {
 	public static final String MORSE_STARTING_SIGNAL = "- . - . -";
 
 	private static boolean minimizeOutput = false;
+
+	public static final String OUTPUT_TYPE_HUMAN_READABLE = "HR";
+	public static final String OUTPUT_TYPE_MACHINE_READABLE = "MR";
+	public static final String OUTPUT_TYPE_DEFAULT = OUTPUT_TYPE_HUMAN_READABLE;
 	
 	/**
 	 * Constructor
 	 */
-	public MorseCode(String output_type) {
-		// FIXME: this is obviously not the best solution...
-		if (output_type == "MR") {
+	public MorseCode(Context c) {
+		UserSetting userSettings = new UserSetting(c);
+		String outputType = userSettings.getString("outputType");
+		if (outputType == null) outputType = OUTPUT_TYPE_DEFAULT;
+
+		if (outputType == OUTPUT_TYPE_HUMAN_READABLE) {
+			wordSeparator = WORD_SEPARATOR_HR;
+			characterSeparator = CHARACTER_SEPARATOR_HR;
+			minimizeOutput = true;
+		} else if (outputType == OUTPUT_TYPE_MACHINE_READABLE) {
 			wordSeparator = WORD_SEPARATOR_MR;
 			characterSeparator = CHARACTER_SEPARATOR_MR;
 			minimizeOutput = false;
 		} else {
-			wordSeparator = WORD_SEPARATOR_HR;
-			characterSeparator = CHARACTER_SEPARATOR_HR;
-			minimizeOutput = true;
+			// FIXME: throw an exception
+			return;
 		}
-		
+
 		// letters
 		morseCharacters.put('A', ". -");
 		morseCharacters.put('B', "- . . .");
@@ -135,7 +147,7 @@ public class MorseCode {
 				+ wordToMorse(words[wordIndex]);
 		}
 
-		// FIXME: spaces are already contained in the morseCharacters hashtable
+		// FIXME: spaces are already contained in the morseCharacters Hashtable
 		if (minimizeOutput)
 			morseText = morseText.replaceAll(" ", "");
 		

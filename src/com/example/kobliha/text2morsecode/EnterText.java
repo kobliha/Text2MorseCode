@@ -7,11 +7,13 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 
 public class EnterText extends Activity {
+	public static final String PREFERENCES = "Text2MorseCode";
+
     /**
      * Called when the activity is first created.
      */
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
@@ -46,6 +48,20 @@ public class EnterText extends Activity {
     }
 
     /**
+     * Reads and stores the currently selected output type from UI.
+     */
+    private void storeCurrentOutputType() {
+    	UserSetting userSettings = new UserSetting(this.getBaseContext());
+
+    	final RadioButton machineReadableOutput = (RadioButton) findViewById(R.id.output_type_MR);
+    	String outputType = (machineReadableOutput.isChecked()
+    			? MorseCode.OUTPUT_TYPE_MACHINE_READABLE : MorseCode.OUTPUT_TYPE_HUMAN_READABLE);
+
+    	userSettings.setString("outputType", outputType);
+    	userSettings.Save();
+    }
+    
+    /**
      * Adjusts EditText widgets according their state and translates
      * the entered text if appropriate.
      */
@@ -55,8 +71,7 @@ public class EnterText extends Activity {
 
     	EditText morseCodeWidget = (EditText)findViewById(R.id.morse_code);
 
-    	final RadioButton machineReadableOutput = (RadioButton) findViewById(R.id.output_type_MR);
-    	String output_type = (machineReadableOutput.isChecked() ? "MR" : "HR");
+    	storeCurrentOutputType();
 
     	// nothing entered
     	if (enteredText.length() == 0) {
@@ -64,7 +79,7 @@ public class EnterText extends Activity {
     		morseCodeWidget.setText("");
     	} else {
     		morseCodeWidget.setEnabled(true);
-        	MorseCode morseCode = new MorseCode(output_type);
+        	MorseCode morseCode = new MorseCode(this.getBaseContext());
         	morseCodeWidget.setText(morseCode.textToMorse(enteredText));
     	}
     }
