@@ -7,8 +7,6 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 
 public class EnterText extends Activity {
-	public static final String PREFERENCES = "Text2MorseCode";
-
     /**
      * Called when the activity is first created.
      */
@@ -38,7 +36,7 @@ public class EnterText extends Activity {
     }
 
     /**
-     * Clears the UI
+     * Clears the UI 
      */
     public void runClearWidgets (View v) {
     	EditText enteredTextWidget = (EditText)findViewById(R.id.text_entry);
@@ -54,8 +52,10 @@ public class EnterText extends Activity {
     	UserSetting userSettings = new UserSetting(this.getBaseContext());
 
     	final RadioButton machineReadableOutput = (RadioButton) findViewById(R.id.output_type_MR);
-    	String outputType = (machineReadableOutput.isChecked()
-    			? MorseCode.OUTPUT_TYPE_MACHINE_READABLE : MorseCode.OUTPUT_TYPE_HUMAN_READABLE);
+    	String outputType = (machineReadableOutput.isChecked() ?
+    		MorseCode.OUTPUT_TYPE_MACHINE_READABLE
+    		:
+    		MorseCode.OUTPUT_TYPE_HUMAN_READABLE);
 
     	userSettings.setString("outputType", outputType);
     	userSettings.Save();
@@ -79,8 +79,8 @@ public class EnterText extends Activity {
     		morseCodeWidget.setText("");
     	} else {
     		morseCodeWidget.setEnabled(true);
-        	MorseCode morseCode = new MorseCode(this.getBaseContext());
-        	morseCodeWidget.setText(morseCode.textToMorse(enteredText));
+    		MorseCode morseCode = new MorseCode(this.getBaseContext());
+	        morseCodeWidget.setText(morseCode.textToMorse(enteredText));
     	}
-    }
+	}
 }

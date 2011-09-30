@@ -15,7 +15,7 @@ public class UserSetting {
 	 * Constructor. Reads user settings and initializes the user
 	 * settings editor.
 	 * 
-	 * @param c Context
+	 * @param Context c
 	 */
 	public UserSetting (Context c) {
 		userSettings = c.getSharedPreferences(PREFERENCES_ID, 0);
@@ -28,7 +28,7 @@ public class UserSetting {
 	 * @param String key
 	 * @return String value
 	 */
-	public String getString (String key) {
+	protected String getString (String key) {
 		return userSettings.getString(key, null);
 	}
 
@@ -38,7 +38,7 @@ public class UserSetting {
 	 * @param String key
 	 * @param String value
 	 */
-	public void setString (String key, String value) {
+	protected void setString (String key, String value) {
 		editor.putString(key, value);
 	}
 	
@@ -48,7 +48,7 @@ public class UserSetting {
 	 * @param String key
 	 * @return boolean value
 	 */
-	public boolean getBoolean (String key) {
+	protected boolean getBoolean (String key) {
 		return userSettings.getBoolean(key, (Boolean) null);
 	}
 
@@ -58,14 +58,14 @@ public class UserSetting {
 	 * @param String key
 	 * @param boolean value
 	 */
-	public void setBoolean (String key, boolean value) {
+	protected void setBoolean (String key, boolean value) {
 		editor.putBoolean(key, value);
 	}
 
 	/**
 	 * Saves the current settings state.
 	 */
-	public void Save() {
+	protected void Save() {
 		editor.commit();
 	}
 }
